@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 @SpringBootApplication
 public class ProduitMsApplication {
@@ -15,7 +16,8 @@ public class ProduitMsApplication {
     }
 
     @Bean
-    CommandLineRunner start(ProduitRepository produitRepository){
+    CommandLineRunner start(ProduitRepository produitRepository,
+                            RepositoryRestConfiguration restConfiguration){
         return args -> {
             produitRepository.save(new Produit(null, "DELL XPS 13", 120, 1500));
             produitRepository.save(new Produit(null, "Samsung S9", 99, 500));
@@ -25,6 +27,8 @@ public class ProduitMsApplication {
                     .forEach(produit -> {
                         System.out.println(produit.getName());
                     });
+
+            restConfiguration.exposeIdsFor(Produit.class);
         };
     }
 }
